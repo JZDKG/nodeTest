@@ -2,7 +2,7 @@ const express = require('express');
 const boom = require('boom');
 const router = express.Router()
 const Result = require('../models/Result')
-const {login, findUser} = require('../services/user')
+const {login, findUser, register} = require('../services/user')
 const {md5, decoded} = require('../utils')
 const { PWD_SALT,PRIVATE_KEY,JWT_EXPIRES  } = require('../utils/constant')
 const { body, validationResult } = require('express-validator')
@@ -55,8 +55,14 @@ router.get('/info', function (req, res) {
     } else {
         new Result('用户信息查询失败').fail(res)
     }
+})
 
-
+router.post('/register', function (req, res) {
+    console.log(req.body)
+    const {username, password} = req.body
+    register(username, password).then((res) => {
+        console.log(res)
+    })
 })
 
 module.exports = router

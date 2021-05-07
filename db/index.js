@@ -47,7 +47,30 @@ function queryOne(sql) {
     })
 }
 
+function insertSql(addSql, insert) {
+    const conn = connect()
+    debug && console.log(addSql, insert)
+    return new Promise((resolve, reject) => {
+        try {
+            conn.query(addSql, insert,(err, results) => {
+                if (err) {
+                    debug && console.log('插入失败，原因：' + JSON.stringify(err))
+                    reject(err)
+                } else {
+                    debug && console.log('插入成功' + JSON.stringify(results))
+                    resolve(results)
+                }
+            })
+        } catch (e) {
+            reject(e)
+        } finally {
+            conn.end()
+        }
+    })
+}
+
 module.exports = {
     querySql,
-    queryOne
+    queryOne,
+    insertSql
 }
